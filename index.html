@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fireworks Example</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #6a0dad; /* Purple background */
+            font-family: Arial, sans-serif;
+        }
+        .wrapper {
+            position: relative;
+            text-align: center;
+        }
+        .question {
+            font-size: 30px;
+            color: white; /* White text color */
+        }
+        .yes-btn, .no-btn {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+        .yes-btn {
+            background-color: #4caf50; /* Green button */
+            color: white;
+        }
+        .no-btn {
+            background-color: #f44336; /* Red button */
+            color: white;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="question">Do you love me?</div>
+        <button class="yes-btn">Yes</button>
+        <button class="no-btn">No</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+    <script>
+        const wrapper = document.querySelector('.wrapper');
+        const question = document.querySelector('.question');
+        const yesBtn = document.querySelector('.yes-btn');
+        const noBtn = document.querySelector('.no-btn');
+        const wrapperRect = wrapper.getBoundingClientRect();
+        const noBtnRect = noBtn.getBoundingClientRect();
+
+        yesBtn.addEventListener('click', () => {
+            question.innerHTML = 'I Love You Too :)';
+
+            // Change to 'Will you marry me?' after a brief delay
+            setTimeout(() => {
+                question.innerHTML = 'Will you marry me?';
+
+                // Update the event listener for the yes button
+                yesBtn.addEventListener('click', () => {
+                    question.innerHTML = 'Congratulations!';
+
+                    // Fireworks effect after 'Congratulations!'
+                    fireworkEffect();
+                }, { once: true });
+            }, 2000);
+        });
+
+        noBtn.addEventListener('mouseover', () => {
+            const i = Math.floor(Math.random() * (wrapperRect.width - noBtnRect.width)) + 1;
+            const j = Math.floor(Math.random() * (wrapperRect.height - noBtnRect.height)) + 1;
+            noBtn.style.left = i + 'px';
+            noBtn.style.top = j + 'px';
+        });
+
+        // Function to trigger the fireworks
+        function fireworkEffect() {
+            var duration = 5 * 1000; // Fireworks for 5 seconds
+            var end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 }
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 }
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+    </script>
+</body>
+</html>
